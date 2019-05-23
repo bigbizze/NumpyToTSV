@@ -1,5 +1,26 @@
+"""
+Copyright 2019 Charles Anderson
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files
+ (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify,
+  merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished
+   to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+"""
+
+
 class ConvertNumpy:
     def __init__(self, array, labels=None, quote_all=False):
+        """
+        :param array: Numpy array of shape (num_samples, *n, data) where n is any number of dimensions.
+        :param labels: A list of labels (one dimension only, will update later)
+        :param quote_all: (bool) whether to quote each value
+        """
         self.array = array
         self.labels = labels
         self.quote_all = quote_all
@@ -36,17 +57,35 @@ class ConvertNumpy:
             fp.write(data)
 
     def to_tsv(self, filepath, delim="\t"):
+        """
+        :param filepath: filepath to location to save .tsv file
+        :param delim: delimiter to be used in output file, default '\t'
+        :return: None
+        """
         assert filepath.endswith(".tsv")
         self._array_to(filepath, delim)
 
     def to_csv(self, filepath, delim=","):
+        """
+         :param filepath: filepath to location to save .csv file
+         :param delim: delimiter to be used in output file, default ','
+         :return: None
+         """
         assert filepath.endswith(".csv")
         self._array_to(filepath, delim)
 
     def labels_to_tsv(self, filepath):
+        """
+         :param filepath: filepath to location to save .tsv file
+         :return: None
+         """
         assert filepath.endswith(".tsv")
         self._labels_to(filepath)
 
     def labels_to_csv(self, filepath):
+        """
+         :param filepath: filepath to location to save .csv file
+         :return: None
+         """
         assert filepath.endswith(".csv")
         self._labels_to(filepath)
