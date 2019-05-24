@@ -14,18 +14,21 @@
 
 
 class ConvertNumpy:
-    def __init__(self, array, labels=None):
-        """
-        :param array: Numpy array of shape (num_samples, *n, data) where n is any number of dimensions.
-        :param labels: A list of labels (one dimension only, will update later)
-        """
-        self.array = array
-        self.labels = labels
+    def __init__(self):
+        self.array = None
+        self.labels = None
         self.quote_all = False
-        self.num_dims = len(self.array.shape)
-        self.dim_lens = [self.array.shape[x] for x in range(self.num_dims)]
-        self.num_labels = len(self.labels)
-        assert self.dim_lens[0] == self.num_labels
+        self.num_dims = 0
+        self.dim_lens = list()
+        self.num_labels = 0
+
+    def _get_stat(self, array=None, labels=None):
+        if array is not None:
+            self.num_dims = len(array.shape)
+            self.dim_lens = [array.shape[x] for x in range(self.num_dims)]
+            assert self.dim_lens[0] == self.dim_lens
+        if labels is not None:
+            self.num_labels = len(labels)
 
     @staticmethod
     def _join_generic_sep(x, delim):
@@ -56,44 +59,52 @@ class ConvertNumpy:
         with open(filepath, "w") as fp:
             fp.write(data)
 
-    def to_tsv(self, filepath, delim="\t", quote_all=False):
+    def to_tsv(self, array, filepath, delim="\t", quote_all=False):
         """
+        :param array: Numpy array of shape (num_samples, *n, data) where n is any number of dimensions.
         :param filepath: filepath to location to save .tsv file
         :param delim: delimiter to be used in output file, default '\t'
         :param quote_all: (bool) whether to quote each value
         :return: None
         """
         assert filepath.endswith(".tsv")
+        self._get_stat(array=array)
         self.quote_all = quote_all
         self._array_to(filepath, delim)
 
-    def to_csv(self, filepath, delim=",", quote_all=False):
+    def to_csv(self, array, filepath, delim=",", quote_all=False):
         """
+         :param array: Numpy array of shape (num_samples, *n, data) where n is any number of dimensions.
          :param filepath: filepath to location to save .csv file
          :param delim: delimiter to be used in output file, default ','
          :param quote_all: (bool) whether to quote each value
          :return: None
          """
         assert filepath.endswith(".csv")
+        self._get_stat(array=array)
         self.quote_all = quote_all
         self._array_to(filepath, delim)
 
-    def labels_to_tsv(self, filepath, quote_all=False):
+    def labels_to_tsv(self, labels, filepath, quote_all=False):
         """
+         :param labels: A list of labels (one dimension only, will update later)
          :param filepath: filepath to location to save .tsv file
          :param quote_all: (bool) whether to quote each value
          :return: None
          """
         assert filepath.endswith(".tsv")
+        self._get_stat(labels=labels)
         self.quote_all = quote_all
         self._labels_to(filepath)
 
-    def labels_to_csv(self, filepath, quote_all=False):
+    def labels_to_csv(self, labels, filepath, quote_all=False):
         """
+         :param labels: A list of labels (one dimension only, will update later)
          :param filepath: filepath to location to save .csv file
          :param quote_all: (bool) whether to quote each value
          :return: None
          """
         assert filepath.endswith(".csv")
+        self._get_stat(labels=labels)
         self.quote_all = quote_all
         self._labels_to(filepath)
