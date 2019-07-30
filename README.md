@@ -1,4 +1,4 @@
-# NumpyToTSV
+# TensorBoardNumpyToTSV
 
 Class to flatten Numpy arrays and convert them into TSV or CSV
 
